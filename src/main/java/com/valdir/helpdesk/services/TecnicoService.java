@@ -14,6 +14,8 @@ import com.valdir.helpdesk.repositories.TecnicoRepository;
 import com.valdir.helpdesk.services.exceptions.DataIntegrityViolationException;
 import com.valdir.helpdesk.services.exceptions.ObjectNotFoundException;
 
+import jakarta.validation.Valid;
+
 @Service
 public class TecnicoService {
 
@@ -36,13 +38,13 @@ public class TecnicoService {
 
 	public Tecnico create(TecnicoDTO objDTO) {
 		objDTO.setId(null);
-		valildaPorCpfeEEmail(objDTO);
+		validaPorCpfeEEmail(objDTO);
 		Tecnico newObj = new Tecnico(objDTO);
 		return repository.save(newObj);
 
 	}
 
-	private void valildaPorCpfeEEmail(TecnicoDTO objDTO) {
+	private void validaPorCpfeEEmail(TecnicoDTO objDTO) {
 		Optional<Pessoa> obj = pessoaRepository.findByCpf(objDTO.getCpf());
 		if (obj.isPresent() && obj.get().getId()!=objDTO.getId()) {
 			throw new DataIntegrityViolationException("CPF já cadastrado no sistema!");
@@ -53,6 +55,15 @@ public class TecnicoService {
 			throw new DataIntegrityViolationException("E-mail já cadastrado no sistema!");
 		}
 		
+	}
+
+	public Tecnico update(Integer id, @Valid TecnicoDTO objDTO) {
+		
+		objDTO.setId(id);
+		Tecnico oldObj = findById(id);
+		validaPorCpfeEEmail(objDTO);
+		oldObj = new Tecnico(objDTO);
+		return repository.save(oldObj);
 	}
 	
 }
