@@ -20,13 +20,11 @@ public class Cliente extends Pessoa {
 	public Cliente() {
 		super();
 		addPerfil(Perfil.CLIENTE);
-		// TODO Auto-generated constructor stub
 	}
 
 	public Cliente(Integer id, String nome, String cpf, String email, String senha) {
 		super(id, nome, cpf, email, senha);
 		addPerfil(Perfil.CLIENTE);
-		// TODO Auto-generated constructor stub
 	}
 
 	public List<Chamado> getChamados() {
