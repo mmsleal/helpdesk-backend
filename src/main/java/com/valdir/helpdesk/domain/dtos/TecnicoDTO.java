@@ -10,15 +10,23 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.valdir.helpdesk.domain.Tecnico;
 import com.valdir.helpdesk.domain.enuns.Perfil;
 
+import jakarta.validation.constraints.NotNull;
+
 public class TecnicoDTO implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	protected Integer id;
+	
+	@NotNull(message = "O Cmapo NOME é requerido")
 	protected String nome;
 	
+	@NotNull(message = "O Cmapo CPF é requerido")
 	protected String cpf;
 	
+	@NotNull(message = "O Cmapo E-MAIL é requerido")
 	protected String email;
+	
+	@NotNull(message = "O Cmapo SENHA é requerido")
 	protected String senha;
 
 	protected Set<Integer> perfis = new HashSet<>();

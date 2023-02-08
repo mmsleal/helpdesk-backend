@@ -18,7 +18,7 @@ import com.valdir.helpdesk.domain.Tecnico;
 import com.valdir.helpdesk.domain.dtos.TecnicoDTO;
 import com.valdir.helpdesk.services.TecnicoService;
 
-import jakarta.annotation.PostConstruct;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(value="/tecnicos")
@@ -43,7 +43,7 @@ public class TecnicoResource {
 	}
 	
 	@PostMapping
-	public ResponseEntity<TecnicoDTO> create(@RequestBody TecnicoDTO objDTO){
+	public ResponseEntity<TecnicoDTO> create(@Valid @RequestBody TecnicoDTO objDTO){
 		
 		Tecnico newObj = service.create(objDTO);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newObj.getId()).toUri();
