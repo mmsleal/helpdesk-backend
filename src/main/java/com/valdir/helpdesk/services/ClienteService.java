@@ -3,18 +3,20 @@ package com.valdir.helpdesk.services;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.valdir.helpdesk.domain.Pessoa;
 import com.valdir.helpdesk.domain.Cliente;
+import com.valdir.helpdesk.domain.Pessoa;
 import com.valdir.helpdesk.domain.dtos.ClienteDTO;
-import com.valdir.helpdesk.repositories.PessoaRepository;
 import com.valdir.helpdesk.repositories.ClienteRepository;
+import com.valdir.helpdesk.repositories.PessoaRepository;
 import com.valdir.helpdesk.services.exceptions.DataIntegrityViolationException;
 import com.valdir.helpdesk.services.exceptions.ObjectNotFoundException;
 
-import jakarta.validation.Valid;
 
 @Service
 public class ClienteService {
@@ -23,7 +25,11 @@ public class ClienteService {
 	private ClienteRepository repository;
 	
 	@Autowired
-	private PessoaRepository pessoaRepository; 
+	private PessoaRepository pessoaRepository;
+	
+	@Autowired
+	private BCryptPasswordEncoder encoder;
+	
 	
 	public Cliente findById(Integer id) {
 		
@@ -38,6 +44,7 @@ public class ClienteService {
 
 	public Cliente create(ClienteDTO objDTO) {
 		objDTO.setId(null);
+		objDTO.setSenha(encoder.encode(objDTO.getSenha()));
 		validaPorCpfeEEmail(objDTO);
 		Cliente newObj = new Cliente(objDTO);
 		return repository.save(newObj);
